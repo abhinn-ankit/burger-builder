@@ -18,10 +18,7 @@ echo -e "Committing changes to local.\n"
 git commit -m "${commit_msg}"
 
 echo -e "Pushing repo.\n"
-if [[ -z "$2" ]]
-then
-    branch_name=$(git branch | grep \* | cut -d ' ' -f2)
-    git push -u origin $branch_name
-else
-    git push
-fi
+
+branch_name=$(git branch | grep \* | cut -d ' ' -f2)
+git push origin ${branch_name}
+
