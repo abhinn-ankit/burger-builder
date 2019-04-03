@@ -10,6 +10,9 @@ else
     commit_msg=$1
 fi
 
+echo -e "Formatting before adding\n"
+pretty-quick staged
+
 echo -e "Adding files:\n"
 git add --all
 
@@ -18,10 +21,7 @@ echo -e "Committing changes to local.\n"
 git commit -m "${commit_msg}"
 
 echo -e "Pushing repo.\n"
-if [[ -z "$2" ]]
-then
-    branch_name=$(git branch | grep \* | cut -d ' ' -f2)
-    git push -u origin $branch_name
-else
-    git push
-fi
+
+branch_name=$(git branch | grep \* | cut -d ' ' -f2)
+git push origin ${branch_name}
+
