@@ -19,8 +19,12 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "precommit": "pretty-quick staged",
     "tslint-check": "tslint-config-prettier-check ./tslint.json"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick staged"
+    }
   },
   "eslintConfig": {
     "extends": "react-app"

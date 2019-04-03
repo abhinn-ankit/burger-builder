@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import classes from './Layout.module.scss';
 
-const layout = (props) => {
+const layout = props => {
   return (
     <Fragment>
       <div>Toolbar, Backdrop, Sidedrawer</div>
