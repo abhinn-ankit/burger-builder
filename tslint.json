@@ -8,6 +8,9 @@
   "rules": {
     "prettier": [true, "./prettierrc"],
     "member-access": [false],
-    "interface-name": true
+    "interface-name": true,
+    "ordered-imports": false,
+    "object-literal-sort-keys": false,
+    "no-console": false
   }
 }

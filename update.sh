@@ -10,6 +10,9 @@ else
     commit_msg=$1
 fi
 
+echo -e "Formatting before adding\n"
+pretty-quick staged
+
 echo -e "Adding files:\n"
 git add --all
 
