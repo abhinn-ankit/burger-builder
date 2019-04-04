@@ -11,6 +11,7 @@
     "interface-name": true,
     "ordered-imports": false,
     "object-literal-sort-keys": false,
-    "no-console": false
+    "no-console": false,
+    "forin": false
   }
 }

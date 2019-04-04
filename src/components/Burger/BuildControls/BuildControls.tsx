@@ -25,13 +25,34 @@ const controls = [
 const buildControls = props => {
   return (
     <div className={classes.BuildControls}>
+      <p>
+        Current price: <strong>{props.price.toFixed(2)}</strong>
+      </p>
       {controls.map(control => {
-        return <BuildControl key={control.label} label={control.label} />;
+        return (
+          <BuildControl
+            key={control.label}
+            label={control.label}
+            added={props.ingredientAdded.bind(null, control.type)}
+            removed={props.ingredientRemoved.bind(null, control.type)}
+            disabled={props.disabled[control.type]}
+          />
+        );
       })}
     </div>
   );
 };
 
-buildControls.propTypes = {};
+buildControls.propTypes = {
+  ingredientAdded: PropTypes.func,
+  ingredientRemoved: PropTypes.func,
+  price: PropTypes.number,
+  disabled: PropTypes.shape({
+    salad: PropTypes.bool,
+    bacon: PropTypes.bool,
+    cheese: PropTypes.bool,
+    meat: PropTypes.bool,
+  }),
+};
 
 export default buildControls;
