@@ -39,6 +39,9 @@ const buildControls = props => {
           />
         );
       })}
+      <button className={classes.OrderButton} disabled={!props.purchasable} onClick={props.ordered}>
+        ORDER NOW
+      </button>
     </div>
   );
 };
@@ -47,6 +50,8 @@ buildControls.propTypes = {
   ingredientAdded: PropTypes.func,
   ingredientRemoved: PropTypes.func,
   price: PropTypes.number,
+  ordered: PropTypes.func,
+  purchasable: PropTypes.bool,
   disabled: PropTypes.shape({
     salad: PropTypes.bool,
     bacon: PropTypes.bool,
