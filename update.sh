@@ -4,7 +4,7 @@ commit_msg=Update
 
 if [[ -z "$1" ]]
 then
-    echo "usage ./update.sh <commit message> <optional: true (to push to a new branch)>"
+    echo "usage ./update.sh <commit message>"
     echo "Taking default commit message: \"Update\""
 else
     commit_msg=$1
