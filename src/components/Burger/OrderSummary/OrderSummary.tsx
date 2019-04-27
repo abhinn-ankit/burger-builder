@@ -1,40 +1,45 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Button from '../../UI/Button/Button';
-import Aux from '../../../hoc/Aux';
+import Aux from '../../../hoc/Aux/Aux';
 
-const orderSummary = props => {
-  const ingredientSummary = Object.keys(props.ingredients).map(igKey => {
+class OrderSummary extends Component<any, any> {
+  static propTypes;
+
+  componentWillUpdate(nextProps: Readonly<any>, nextState: Readonly<any>, nextContext: any): void {
+    console.log('Order summary will update');
+  }
+
+  render() {
+    const ingredientSummary = Object.keys(this.props.ingredients).map(igKey => {
+      return (
+        <li key={igKey} style={{ textTransform: 'capitalize' }}>
+          <span>{igKey}</span>: {this.props.ingredients[igKey]}
+        </li>
+      );
+    });
     return (
-      <li key={igKey} style={{ textTransform: 'capitalize' }}>
-        <span>{igKey}</span>: {props.ingredients[igKey]}
-      </li>
+      <Aux>
+        <h3>You order</h3>
+        <p>A delicious burger with the following ingredients:</p>
+        <ul>{ingredientSummary}</ul>
+        <p>Continue to checkout?</p>
+        <Button btnType="Danger" clicked={this.props.purchaseCancelled}>
+          CANCEL
+        </Button>
+        <Button btnType="Success" clicked={this.props.purchaseContinued}>
+          CONTINUE
+        </Button>
+      </Aux>
     );
-  });
-  return (
-    <Aux>
-      <h3>You order</h3>
-      <p>A delicious burger with the following ingredients:</p>
-      <ul>{ingredientSummary}</ul>
-      <p>
-        <strong>TotalPrice: {props.price.toFixed(2)}</strong>
-      </p>
-      <p>Continue to checkout?</p>
-      <Button btnType="Danger" clicked={props.purchaseCancelled}>
-        CANCEL
-      </Button>
-      <Button btnType="Success" clicked={props.purchaseContinued}>
-        CONTINUE
-      </Button>
-    </Aux>
-  );
-};
+  }
+}
 
-orderSummary.propTypes = {
+OrderSummary.propTypes = {
   ingredients: PropTypes.object,
   price: PropTypes.number,
   purchaseCancelled: PropTypes.func,
   purchaseContinued: PropTypes.func,
 };
 
-export default orderSummary;
+export default OrderSummary;
