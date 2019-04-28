@@ -1,11 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import classes from './Modal.module.scss';
 import Backdrop from '../Backdrop/Backdrop';
-import PropTypes from 'prop-types';
 
-class Modal extends Component<any, any> {
-  static propTypes: any;
-
+class Modal extends Component<IProps, any> {
   shouldComponentUpdate(nextProps: Readonly<any>, nextState: Readonly<any>, nextContext: any): boolean {
     return nextProps.show !== this.props.show || this.props.children !== nextProps.children;
   }
@@ -28,9 +25,9 @@ class Modal extends Component<any, any> {
   }
 }
 
-Modal.propTypes = {
-  show: PropTypes.bool,
-  modalClosed: PropTypes.func,
-};
+interface IProps {
+  show: boolean;
+  modalClosed(): void;
+}
 
 export default Modal;

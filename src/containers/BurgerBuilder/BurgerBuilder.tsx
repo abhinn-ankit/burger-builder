@@ -6,6 +6,7 @@ import Modal from '../../components/UI/Modal/Modal';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import axios from '../../axios';
 import Spinner from '../../components/UI/Spinner/Spinner';
+import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 
 const INGREDIENT_PRICES = {
   salad: 0.5,
@@ -112,7 +113,7 @@ class BurgerBuilder extends Component {
   };
 
   render() {
-    const disabledInfo = {} as IDisableddInfo;
+    const disabledInfo = {} as IDisabledInfo;
     for (const key in this.state.ingredients) {
       disabledInfo[key] = this.state.ingredients[key] <= 0;
     }
@@ -129,11 +130,9 @@ class BurgerBuilder extends Component {
     }
     return (
       <Aux>
-        {
-          <Modal show={this.state.purchasing} modalClosed={this.purchaseCancelHandler}>
-            {orderSummary}
-          </Modal>
-        }
+        <Modal show={this.state.purchasing} modalClosed={this.purchaseCancelHandler}>
+          {orderSummary}
+        </Modal>
         <Burger ingredients={this.state.ingredients} />
         <BuildControls
           ingredientAdded={this.addIngredientHandler}
@@ -148,11 +147,11 @@ class BurgerBuilder extends Component {
   }
 }
 
-interface IDisableddInfo {
+interface IDisabledInfo {
   salad: boolean;
   bacon: boolean;
   cheese: boolean;
   meat: boolean;
 }
 
-export default BurgerBuilder;
+export default withErrorHandler(BurgerBuilder, axios);
