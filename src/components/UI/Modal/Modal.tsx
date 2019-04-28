@@ -7,7 +7,7 @@ class Modal extends Component<any, any> {
   static propTypes: any;
 
   shouldComponentUpdate(nextProps: Readonly<any>, nextState: Readonly<any>, nextContext: any): boolean {
-    return nextProps.show !== this.props.show;
+    return nextProps.show !== this.props.show || this.props.children !== nextProps.children;
   }
 
   render() {
