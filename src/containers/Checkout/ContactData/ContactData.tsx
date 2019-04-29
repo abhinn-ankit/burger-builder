@@ -20,6 +20,7 @@ class ContactData extends Component<IProps & Route, any> {
                     required: true,
                 },
                 valid: false,
+                touched: false,
             },
             street: {
                 elementType: 'input',
@@ -32,6 +33,7 @@ class ContactData extends Component<IProps & Route, any> {
                     required: true,
                 },
                 valid: false,
+                touched: false,
             },
             zipCode: {
                 elementType: 'input',
@@ -46,6 +48,7 @@ class ContactData extends Component<IProps & Route, any> {
                     maxLength: 5,
                 },
                 valid: false,
+                touched: false,
             },
             country: {
                 elementType: 'input',
@@ -58,6 +61,7 @@ class ContactData extends Component<IProps & Route, any> {
                     required: true,
                 },
                 valid: false,
+                touched: false,
             },
             email: {
                 elementType: 'input',
@@ -70,6 +74,7 @@ class ContactData extends Component<IProps & Route, any> {
                     required: true,
                 },
                 valid: false,
+                touched: false,
             },
             deliveryMethod: {
                 elementType: 'select',
@@ -132,6 +137,7 @@ class ContactData extends Component<IProps & Route, any> {
         const updatedFormElement = { ...updatedOrderForm[inputIdentifier] };
         updatedFormElement.value = event.target.value;
         updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation);
+        updatedFormElement.touched = true;
         updatedOrderForm[inputIdentifier] = updatedFormElement;
         this.setState({
             orderForm: updatedOrderForm,
@@ -149,6 +155,9 @@ class ContactData extends Component<IProps & Route, any> {
             .map(formElement => (
                 <Input
                     key={formElement.id}
+                    shouldValidatie={formElement.config.validation}
+                    invalid={!formElement.config.valid}
+                    touched={formElement.config.touched}
                     elementType={formElement.config.elementType}
                     elementConfig={formElement.config.elementConfig}
                     value={formElement.config.value}
