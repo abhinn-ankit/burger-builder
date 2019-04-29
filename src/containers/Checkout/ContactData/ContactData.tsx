@@ -16,6 +16,10 @@ class ContactData extends Component<IProps & Route, any> {
                     placeholder: 'Your Name',
                 },
                 value: '',
+                validation: {
+                    required: true,
+                },
+                valid: false,
             },
             street: {
                 elementType: 'input',
@@ -24,6 +28,10 @@ class ContactData extends Component<IProps & Route, any> {
                     placeholder: 'Street',
                 },
                 value: '',
+                validation: {
+                    required: true,
+                },
+                valid: false,
             },
             zipCode: {
                 elementType: 'input',
@@ -32,6 +40,12 @@ class ContactData extends Component<IProps & Route, any> {
                     placeholder: 'Zip Code',
                 },
                 value: '',
+                validation: {
+                    required: true,
+                    minLength: 5,
+                    maxLength: 5,
+                },
+                valid: false,
             },
             country: {
                 elementType: 'input',
@@ -40,6 +54,10 @@ class ContactData extends Component<IProps & Route, any> {
                     placeholder: 'Country',
                 },
                 value: '',
+                validation: {
+                    required: true,
+                },
+                valid: false,
             },
             email: {
                 elementType: 'input',
@@ -48,13 +66,17 @@ class ContactData extends Component<IProps & Route, any> {
                     placeholder: 'Your Email',
                 },
                 value: '',
+                validation: {
+                    required: true,
+                },
+                valid: false,
             },
             deliveryMethod: {
-                elementType: 'input',
+                elementType: 'select',
                 elementConfig: {
                     options: [
                         { value: 'fastest', displayValue: 'Fastest' },
-                        { values: 'cheapest', displayValue: 'Cheapest' },
+                        { value: 'cheapest', displayValue: 'Cheapest' },
                     ],
                 },
                 value: '',
@@ -63,13 +85,19 @@ class ContactData extends Component<IProps & Route, any> {
         loading: false,
     };
 
-    orderHandler = () => {
+    orderHandler = event => {
+        event.preventDefault();
+        const formData = {};
+        Object.keys(this.state.orderForm).forEach(key => {
+            formData[key] = this.state.orderForm[key].value;
+        });
         this.setState({
             loading: true,
         });
         const order = {
             ingredients: this.props.ingredients,
             price: this.props.price,
+            orderData: formData,
         };
         axios
             .post('/orders.json', order)
@@ -83,6 +111,31 @@ class ContactData extends Component<IProps & Route, any> {
                     loading: false,
                 });
             });
+    };
+
+    checkValidity(value, rules) {
+        let isValid = true;
+        if (rules.required) {
+            isValid = value.trim() !== '' && isValid;
+        }
+        if (rules.minLength) {
+            isValid = value.length >= rules.minLength && isValid;
+        }
+        if (rules.maxLength) {
+            isValid = value.length <= rules.maxLength && isValid;
+        }
+        return isValid;
+    }
+
+    inputChangedHandler = (event, inputIdentifier) => {
+        const updatedOrderForm = { ...this.state.orderForm };
+        const updatedFormElement = { ...updatedOrderForm[inputIdentifier] };
+        updatedFormElement.value = event.target.value;
+        updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation);
+        updatedOrderForm[inputIdentifier] = updatedFormElement;
+        this.setState({
+            orderForm: updatedOrderForm,
+        });
     };
 
     render() {
@@ -99,14 +152,13 @@ class ContactData extends Component<IProps & Route, any> {
                     elementType={formElement.config.elementType}
                     elementConfig={formElement.config.elementConfig}
                     value={formElement.config.value}
+                    changed={event => this.inputChangedHandler(event, formElement.id)}
                 />
             ));
         let form = (
-            <form>
+            <form onSubmit={this.orderHandler}>
                 {formElements}
-                <Button btnType="Success" clicked={this.orderHandler}>
-                    ORDER
-                </Button>
+                <Button btnType="Success">ORDER</Button>
             </form>
         );
         if (this.state.loading) {
