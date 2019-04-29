@@ -33,7 +33,7 @@ burger.propTypes = {
     bacon: PropTypes.number,
     cheese: PropTypes.number,
     meat: PropTypes.number,
-  }),
+  }).isRequired,
 };
 
 export default burger;

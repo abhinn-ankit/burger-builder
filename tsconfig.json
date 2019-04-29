@@ -10,6 +10,7 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "module": "esnext",
+    "downlevelIteration": true,
     "noImplicitAny": false,
     "strictNullChecks": false,
     "moduleResolution": "node",

@@ -7,6 +7,7 @@ import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import axios from '../../axios';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
+import { Route } from 'react-router-dom';
 
 const INGREDIENT_PRICES = {
   salad: 0.5,
@@ -15,7 +16,7 @@ const INGREDIENT_PRICES = {
   meat: 1.3,
 };
 
-class BurgerBuilder extends Component {
+class BurgerBuilder extends Component<Route, any> {
   state = {
     ingredients: null,
     totalPrice: 4,
@@ -92,35 +93,44 @@ class BurgerBuilder extends Component {
 
   purchaseContinueHandler = () => {
     // alert('You continue!');
-    this.setState({
-      loading: true,
+    // this.setState({
+    //   loading: true,
+    // });
+    // const order = {
+    //   ingredients: this.state.ingredients,
+    //   price: this.state.totalPrice,
+    //   customer: {
+    //     name: 'Abhinn',
+    //     address: {
+    //       street: 'Smith Street',
+    //       zipCode: '02120',
+    //       country: 'US',
+    //     },
+    //     emailAddress: 'test@test.com',
+    //   },
+    //   deliveryMethod: 'fastest',
+    // };
+    // axios
+    //   .post('/orders.json', order)
+    //   .then(res => {
+    //     console.log(res);
+    //   })
+    //   .catch(err => console.error(err))
+    //   .finally(() => {
+    //     this.setState({
+    //       loading: false,
+    //       purchasing: false,
+    //     });
+    //   });
+    const queryParams = [];
+    for (const i in this.state.ingredients) {
+      queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]));
+    }
+    const queryString = queryParams.join('&');
+    this.props.history.push({
+      pathname: '/checkout',
+      search: '?' + queryString,
     });
-    const order = {
-      ingredients: this.state.ingredients,
-      price: this.state.totalPrice,
-      customer: {
-        name: 'Abhinn',
-        address: {
-          street: 'Smith Street',
-          zipCode: '02120',
-          country: 'US',
-        },
-        emailAddress: 'test@test.com',
-      },
-      deliveryMethod: 'fastest',
-    };
-    axios
-      .post('/orders.json', order)
-      .then(res => {
-        console.log(res);
-      })
-      .catch(err => console.error(err))
-      .finally(() => {
-        this.setState({
-          loading: false,
-          purchasing: false,
-        });
-      });
   };
 
   render() {
