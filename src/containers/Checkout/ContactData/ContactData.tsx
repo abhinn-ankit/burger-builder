@@ -85,8 +85,11 @@ class ContactData extends Component<IProps & Route, any> {
                     ],
                 },
                 value: '',
+                valid: true,
+                validation: {},
             },
         },
+        formIsValid: false,
         loading: false,
     };
 
@@ -110,8 +113,7 @@ class ContactData extends Component<IProps & Route, any> {
                 console.log(res);
                 this.props.history.push('/');
             })
-            .catch(err => console.error(err))
-            .finally(() => {
+            .catch(err => {
                 this.setState({
                     loading: false,
                 });
@@ -120,14 +122,16 @@ class ContactData extends Component<IProps & Route, any> {
 
     checkValidity(value, rules) {
         let isValid = true;
-        if (rules.required) {
-            isValid = value.trim() !== '' && isValid;
-        }
-        if (rules.minLength) {
-            isValid = value.length >= rules.minLength && isValid;
-        }
-        if (rules.maxLength) {
-            isValid = value.length <= rules.maxLength && isValid;
+        if (rules) {
+            if ('required' in rules) {
+                isValid = value.trim() !== '' && isValid;
+            }
+            if ('minLength' in rules) {
+                isValid = value.length >= rules.minLength && isValid;
+            }
+            if ('maxLength' in rules) {
+                isValid = value.length <= rules.maxLength && isValid;
+            }
         }
         return isValid;
     }
@@ -139,8 +143,19 @@ class ContactData extends Component<IProps & Route, any> {
         updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation);
         updatedFormElement.touched = true;
         updatedOrderForm[inputIdentifier] = updatedFormElement;
+
+        let formIsValid = true;
+        for (const inputIdentifiers in updatedOrderForm) {
+            if ('valid' in updatedOrderForm[inputIdentifiers]) {
+                console.log(updatedOrderForm[inputIdentifiers].valid);
+                formIsValid = updatedOrderForm[inputIdentifiers].valid && formIsValid;
+            }
+        }
+        console.log(formIsValid);
+
         this.setState({
             orderForm: updatedOrderForm,
+            formIsValid,
         });
     };
 
@@ -167,7 +182,9 @@ class ContactData extends Component<IProps & Route, any> {
         let form = (
             <form onSubmit={this.orderHandler}>
                 {formElements}
-                <Button btnType="Success">ORDER</Button>
+                <Button btnType="Success" disabled={!this.state.formIsValid}>
+                    ORDER
+                </Button>
             </form>
         );
         if (this.state.loading) {
